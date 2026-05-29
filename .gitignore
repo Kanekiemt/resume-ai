@@ -1,0 +1,44 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Claude Code config
+.claude/
+
+# User uploaded images
+public/*.jpg
+public/*.png
+
+# Screenshots and temp files
+屏幕截图*
+新建 文本文档*
+
+# Debug and test artifacts
+.debug-raw-text.txt
+fresh.json
+tmp_parse.json
+test-parse.mjs
+
+# Tesseract traineddata (large binary files)
+*.traineddata
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
