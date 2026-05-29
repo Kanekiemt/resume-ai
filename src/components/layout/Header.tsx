@@ -33,8 +33,20 @@ export default function Header({
   const isPreview = currentStep === 'preview';
 
   return (
-    <header className="app-header">
+    <header className="app-header" style={{ position: 'relative' }}>
       <div className="header-accent" />
+      <button
+        onClick={onOpenSettings}
+        title="API Key 设置"
+        style={{
+          position: 'absolute', right: 16, top: '50%', transform: 'translateY(-50%)',
+          background: 'none', border: 'none', cursor: 'pointer',
+          fontSize: 22, lineHeight: 1, opacity: 0.7, color: 'white',
+          zIndex: 10,
+        }}
+      >
+        ⚙
+      </button>
       <div className="max-w-6xl mx-auto px-4 sm:px-6 h-14 sm:h-16 flex items-center justify-between">
         {/* Logo */}
         <div className="flex items-center gap-2 sm:gap-3">
@@ -66,17 +78,6 @@ export default function Header({
               </button>
             </>
           )}
-          <button
-            onClick={onOpenSettings}
-            title="API Key 设置"
-            style={{
-              background: 'none', border: 'none', cursor: 'pointer',
-              fontSize: 22, lineHeight: 1, opacity: 0.7, color: 'white',
-              padding: '0 2px',
-            }}
-          >
-            ⚙
-          </button>
         </div>
       </div>
 
