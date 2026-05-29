@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { getBuiltInRefs } from '../../data/resumeReferences';
+import { apiUrl } from '../../utils/api';
 
 interface Snippet {
   snippet: string;
@@ -47,7 +48,7 @@ export default function ReferencePanel({
     try {
       const apiKey = localStorage.getItem('resume_settings');
       const key = apiKey ? JSON.parse(apiKey)?.state?.apiKey || '' : '';
-      const res = await fetch('/api/search-section-refs', {
+      const res = await fetch(apiUrl('/api/search-section-refs'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${key}` },
         body: JSON.stringify({ sectionType, sectionTitle, positionTitle: positionTitle || '', companyName: companyName || '' }),

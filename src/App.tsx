@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useSettingsStore } from './store/useSettingsStore';
 import { useSessionStore } from './store/useSessionStore';
 import { generateWordDoc, downloadWordFile } from './utils/wordExport';
+import { apiUrl } from './utils/api';
 import Header from './components/layout/Header';
 import UploadStep from './components/steps/UploadStep';
 import JobStep from './components/steps/JobStep';
@@ -79,7 +80,7 @@ export default function App() {
     try {
       const fd = new FormData();
       fd.append('file', file);
-      const res = await fetch('/api/parse-resume', { method: 'POST', body: fd });
+      const res = await fetch(apiUrl('/api/parse-resume'), { method: 'POST', body: fd });
       const text = await res.text();
       let json: any;
       try { json = JSON.parse(text); } catch { setError('解析失败，请重试'); session.setResumeFileName(''); setStatus(''); return; }
@@ -111,7 +112,7 @@ export default function App() {
     setError('');
     if (session.jobUrl.trim()) {
       try {
-        const res = await fetch('/api/fetch-job', {
+        const res = await fetch(apiUrl('/api/fetch-job'), {
           method: 'POST', headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ url: session.jobUrl }),
         });
@@ -134,7 +135,7 @@ export default function App() {
     setRefResults([]);
     setSelectedRefId('');
     try {
-      const res = await fetch('/api/search-reference', {
+      const res = await fetch(apiUrl('/api/search-reference'), {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ position: session.positionTitle, company: session.companyName }),
       });
@@ -155,7 +156,7 @@ export default function App() {
     setStatus('正在获取参考内容...');
     setError('');
     try {
-      const res = await fetch('/api/fetch-reference-content', {
+      const res = await fetch(apiUrl('/api/fetch-reference-content'), {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ url }),
       });
@@ -176,7 +177,7 @@ export default function App() {
     try {
       const body: any = { resumeText: session.resumeText, jobText: session.jobText };
       if (useReference && referenceText) body.referenceText = referenceText;
-      const res = await fetch('/api/generate-resume', {
+      const res = await fetch(apiUrl('/api/generate-resume'), {
         method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${apiKey}` },
         body: JSON.stringify(body),
       });
@@ -203,7 +204,7 @@ export default function App() {
     setChecking(true);
     setError('');
     try {
-      const res = await fetch('/api/self-check', {
+      const res = await fetch(apiUrl('/api/self-check'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${apiKey}` },
         body: JSON.stringify({ resumeJson: tailored, jobText: session.jobText }),
@@ -223,7 +224,7 @@ export default function App() {
     setFixing(true);
     setError('');
     try {
-      const res = await fetch('/api/fix-resume', {
+      const res = await fetch(apiUrl('/api/fix-resume'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${apiKey}` },
         body: JSON.stringify({ resumeJson: tailored, jobText: session.jobText, checkResult }),
@@ -270,7 +271,7 @@ export default function App() {
     setRefining(sectionId);
     setError('');
     try {
-      const res = await fetch('/api/refine-section', {
+      const res = await fetch(apiUrl('/api/refine-section'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${apiKey}` },
         body: JSON.stringify({ section, feedback, jobText: session.jobText }),
