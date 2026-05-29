@@ -47,13 +47,6 @@ export default function Header({
 
         {/* Actions */}
         <div className="flex items-center gap-1.5 sm:gap-2">
-          <button
-            onClick={onOpenSettings}
-            className="btn-ghost text-[11px] sm:text-[13px] py-1 sm:py-1.5 px-2 sm:px-3 text-white/60 border-white/10"
-            title="API Key 设置"
-          >
-            ⚙
-          </button>
           {isPreview && (
             <>
               <select
@@ -73,6 +66,17 @@ export default function Header({
               </button>
             </>
           )}
+          <button
+            onClick={onOpenSettings}
+            title="API Key 设置"
+            style={{
+              background: 'none', border: 'none', cursor: 'pointer',
+              fontSize: 22, lineHeight: 1, opacity: 0.7, color: 'white',
+              padding: '0 2px',
+            }}
+          >
+            ⚙
+          </button>
         </div>
       </div>
 
