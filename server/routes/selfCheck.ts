@@ -79,7 +79,7 @@ async function callWithRetry(body: any, apiKey: string, maxRetries = 3): Promise
 
 export async function selfCheck(req: Request, res: Response) {
   try {
-    const apiKey = req.headers.authorization?.replace('Bearer ', '') || '';
+    const apiKey = req.headers.authorization?.replace('Bearer ', '') || process.env.DEEPSEEK_API_KEY || '';
     if (!apiKey) {
       res.status(400).json({ success: false, error: 'API Key 未设置' });
       return;

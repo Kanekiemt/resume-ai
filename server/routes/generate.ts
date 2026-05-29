@@ -236,7 +236,8 @@ async function callWithRetry(body: any, apiKey: string, maxRetries = 3): Promise
 
 export async function generateResume(req: Request, res: Response) {
   try {
-    const apiKey = req.headers.authorization?.replace('Bearer ', '') || '';
+    // Use client-provided key first, fall back to server's DEEPSEEK_API_KEY env var
+    const apiKey = req.headers.authorization?.replace('Bearer ', '') || process.env.DEEPSEEK_API_KEY || '';
     if (!apiKey) {
       res.status(400).json({ success: false, error: '请先在设置页面填入 API Key' });
       return;
