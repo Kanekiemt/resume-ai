@@ -62,6 +62,9 @@ export default function App() {
   const [pendingFix, setPendingFix] = useState<any>(null);
   const [showConfirm, setShowConfirm] = useState(false);
   const [refining, setRefining] = useState<string | null>(null);
+  const [showSettings, setShowSettings] = useState(false);
+  const [keyInput, setKeyInput] = useState(apiKey);
+  const setApiKey = useSettingsStore((s) => s.setApiKey);
 
   // ── Upload handlers ──
   const handlePasteText = (text: string) => {
@@ -316,12 +319,43 @@ export default function App() {
         onStepClick={handleStepClick}
         onTemplateChange={setTemplateId}
         onExportWord={handleExportWord}
+        onOpenSettings={() => { setKeyInput(apiKey); setShowSettings(true); }}
       />
 
       <AnimeQuoteBanner />
 
       <AlertBanner type="error" message={error} onDismiss={() => setError('')} />
       <AlertBanner type="status" message={status} />
+
+      {/* Settings Modal */}
+      {showSettings && (
+        <div className="modal-overlay" onClick={() => setShowSettings(false)}>
+          <div className="modal-content animate-modal-in" style={{ maxWidth: 420 }} onClick={e => e.stopPropagation()}>
+            <h3 style={{ fontSize: 18, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 16 }}>API Key 设置</h3>
+            <p style={{ fontSize: 13, color: 'var(--text-muted)', marginBottom: 12 }}>
+              输入你的 DeepSeek API Key，用于 AI 生成简历。<br />
+              <a href="https://platform.deepseek.com/api_keys" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent)' }}>
+                点此获取 DeepSeek API Key →
+              </a>
+            </p>
+            <input
+              type="password"
+              value={keyInput}
+              onChange={(e) => setKeyInput(e.target.value)}
+              placeholder="sk-..."
+              className="input-premium"
+              style={{ marginBottom: 16 }}
+              onKeyDown={(e) => { if (e.key === 'Enter') { setApiKey(keyInput); setShowSettings(false); } }}
+            />
+            <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end' }}>
+              <button onClick={() => setShowSettings(false)} className="btn-ghost" style={{ fontSize: 13 }}>取消</button>
+              <button onClick={() => { setApiKey(keyInput); setShowSettings(false); }} className="btn-primary" style={{ fontSize: 13 }}>
+                保存
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <ConfirmModal
         show={showConfirm}
